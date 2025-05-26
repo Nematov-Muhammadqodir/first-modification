@@ -1,0 +1,15 @@
+.home-page-main {
+  text-align: center;
+}
+
+.home-page-main .welcome {
+}
+
+.home-page-main .welcome h1 {
+  margin-bottom: 0;
+}
+
+.welcome h1:nth-child(2) {
+  color: rgb(255, 191, 0);
+  margin-top: 0;
+}

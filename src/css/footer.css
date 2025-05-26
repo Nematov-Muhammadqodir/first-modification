@@ -1,0 +1,15 @@
+.footer-main-container {
+  background-color: rgb(97, 91, 91);
+}
+
+.navbar-btn-container {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+.navbar-btn-container p {
+  margin: 0%;
+  display: flex;
+  align-items: center;
+}
