@@ -5,14 +5,25 @@ import HomePage from "./screens/homepage";
 import Footer from "./screens/footer";
 import Navbar from "./screens/navbar";
 import Menu from "./screens/menu";
+import { CircularProgress } from "@mui/material";
+import Cart from "./screens/cart";
 import "../css/navbar.css";
 import "../css/footer.css";
 import "../css/homePage.css";
-import { CircularProgress } from "@mui/material";
+import "../css/menu.css";
+import "../css/cart.css";
+import "../css/order.css";
+import "../css/top.css";
+import Order from "./screens/order";
+import OrderInfo from "./screens/order/OrderInfo";
+import Top from "./screens/top";
 
 function App() {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+
+  //Vaqtinchalik state
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     // Start spinner on location change
@@ -47,14 +58,26 @@ function App() {
       )}
       <Navbar />
       <Switch>
+        <Route path="/top">
+          <Top />
+        </Route>
         <Route path="/menu">
-          <Menu />
+          <Menu count={count} setCount={setCount} />
+        </Route>
+        <Route path="/cart/new/:orderId">
+          <OrderInfo />
+        </Route>
+        <Route path="/cart/new">
+          <Order />
+        </Route>
+        <Route path="/cart">
+          <Cart count={count} />
         </Route>
         <Route path="/">
           <HomePage />
         </Route>
       </Switch>
-      <Footer />
+      <Footer count={count} setCount={setCount} />
     </>
   );
 }

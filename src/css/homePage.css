@@ -1,15 +1,49 @@
+.home-page-full-screen {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.responsive-bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.home-page-content {
+  position: relative;
+  z-index: 1;
+  padding-top: 50px;
+}
+
 .home-page-main {
   text-align: center;
+}
+
+.homePage-input-container {
+  padding-top: 20px;
+}
+
+.homePage-input-container p {
+  padding-bottom: 20px;
 }
 
 .home-page-main .welcome {
 }
 
 .home-page-main .welcome h1 {
+  color: #22ad07d6;
+  font-size: 60px;
   margin-bottom: 0;
 }
 
-.welcome h1:nth-child(2) {
+.welcome h2:nth-child(2) {
   color: rgb(255, 191, 0);
   margin-top: 0;
+  font-size: 20px;
 }

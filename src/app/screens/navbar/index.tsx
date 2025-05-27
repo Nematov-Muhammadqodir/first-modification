@@ -31,8 +31,12 @@ export default function Navbar() {
             ""
           )}
           <div className="btn-container">
-            <Button variant="contained">Login</Button>
-            <Button variant="contained">Signup</Button>
+            <Button className="login-button" variant="contained">
+              Login
+            </Button>
+            <Button className="signup-button" variant="contained">
+              Signup
+            </Button>
           </div>
         </Stack>
       </Container>
