@@ -21,7 +21,7 @@ export default function Navbar() {
             </a>
           </div>
 
-          {authMember ? (
+          {/* {authMember ? (
             <input
               placeholder="Search order"
               type="text"
@@ -29,7 +29,7 @@ export default function Navbar() {
             />
           ) : (
             ""
-          )}
+          )} */}
           <div className="btn-container">
             <Button className="login-button" variant="contained">
               Login

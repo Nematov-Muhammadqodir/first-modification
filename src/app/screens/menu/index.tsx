@@ -72,7 +72,10 @@ export default function Menu(props: MenuProps) {
                     <p>tomato, mozzarella, basil</p>
                   </div>
                   <div className="menu-item-price-container">
-                    <p>$12.00</p>
+                    <div>
+                      <p>$12.00</p>
+                      <p>views</p>
+                    </div>
                     {count === 0 ? (
                       <Button variant="contained" onClick={handleIncrease}>
                         Add to cart
