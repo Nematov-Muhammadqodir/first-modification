@@ -1,14 +1,30 @@
 import { Button, Container, Stack, TextField } from "@mui/material";
 import { yellow } from "@mui/material/colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { T } from "../../../lib/types/common";
 import NewProducts from "./NewProducts";
 
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
+import { setNewDishes } from "./slice";
+import { retrieveNewDishes } from "./selector";
+import { Product } from "../../../lib/types/product";
+
+const actionDispatch = (dispatch: Dispatch) => ({
+  setNewDishes: (data: Product[]) => dispatch(setNewDishes(data)),
+});
+
+const newDishesRetriever = createSelector(retrieveNewDishes, (newDishes) => ({
+  newDishes,
+}));
+
 export default function HomePage() {
   const [inputValue, setInputValue] = useState("");
   const history = useHistory();
-
+  const { setNewDishes } = actionDispatch(useDispatch());
+  const { newDishes } = useSelector(newDishesRetriever);
   //HANDLERS
   const handleUrlChange = () => {
     history.push("/menu");
@@ -17,6 +33,9 @@ export default function HomePage() {
   const handleUserName = (e: T) => {
     setInputValue(e.target.value);
   };
+
+  useEffect(() => {}, []);
+
   return (
     <>
       <div className="home-page-full-screen" style={{ flex: 1 }}>
