@@ -7,7 +7,7 @@ export interface AppRootState {
 
 //HOMEPAGE
 export interface HomePageState {
-  products: Product[];
+  newDishes: Product[];
 }
 
 //PRODUCTS PAGE
