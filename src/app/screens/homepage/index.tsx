@@ -11,6 +11,7 @@ import { createSelector } from "reselect";
 import { setNewDishes } from "./slice";
 import { retrieveNewDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
+import { serverApi } from "../../../lib/config";
 
 const actionDispatch = (dispatch: Dispatch) => ({
   setNewDishes: (data: Product[]) => dispatch(setNewDishes(data)),
@@ -35,6 +36,8 @@ export default function HomePage() {
   };
 
   useEffect(() => {}, []);
+
+  console.log("serverAPI", serverApi);
 
   return (
     <>
