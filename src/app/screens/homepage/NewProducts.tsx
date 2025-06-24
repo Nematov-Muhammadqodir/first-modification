@@ -32,7 +32,6 @@ export default function NewProducts() {
 
           <div className="cart-main-container">
             {newDishes.map((item: Product) => {
-              console.log("productImages:", item.productImages);
               const imagePath = `${serverApi}/${item.productImages}`;
               return (
                 <div className="cart-item-cont" key={item._id}>

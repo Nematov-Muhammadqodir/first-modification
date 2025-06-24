@@ -1,6 +1,18 @@
 import { Button, Container, Stack } from "@mui/material";
+import { createSelector } from "reselect";
+import { retrievePopularDishes } from "../homepage/selector";
+import { useSelector } from "react-redux";
+import { serverApi } from "../../../lib/config";
 
+const popularDishesRetriever = createSelector(
+  retrievePopularDishes,
+  (popularDishes) => ({
+    popularDishes,
+  })
+);
+// const { popularDishes } = useSelector(popularDishesRetriever);
 export default function TopProducts() {
+  const { popularDishes } = useSelector(popularDishesRetriever);
   const arr = [1, 2, 3];
   return (
     <div className="top-products-screen" style={{ flex: 1 }}>
@@ -49,24 +61,22 @@ export default function TopProducts() {
           </div>
 
           <div className="cart-main-container">
-            {arr.map((item) => {
+            {popularDishes.map((item) => {
+              const imgPath = `${serverApi}/${item.productImages}`;
               return (
-                <div className="cart-item-cont">
+                <div className="cart-item-cont" key={item._id}>
                   <div className="cart-img-container">
-                    <img src="/img/top-pizzas/top-pizza1.png" alt="" />
+                    <img src={imgPath} alt="" />
                   </div>
 
                   <div className="cart-product-info-container">
-                    <h2>Pepperoni Popper</h2>
-                    <p>
-                      Double pepperoni, mozzarella, spicy marinara sauce,
-                      crushed red pepper, black olives
-                    </p>
+                    <h2>{item.productName}</h2>
+                    <p>{item.productIngredients}</p>
                     <div className="cart-product-info-order">
                       <Button variant="text" sx={{ fontWeight: 600 }}>
                         Order Now
                       </Button>
-                      <span>from $14.99</span>
+                      <span>from ${item.productPrice}</span>
                     </div>
                   </div>
                 </div>

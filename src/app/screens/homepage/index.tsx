@@ -8,8 +8,8 @@ import NewProducts from "./NewProducts";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
-import { setNewDishes } from "./slice";
-import { retrieveNewDishes } from "./selector";
+import { setNewDishes, setPopularDishes } from "./slice";
+import { retrieveNewDishes, retrievePopularDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import { serverApi } from "../../../lib/config";
 import ProductsService from "../../services/ProductService";
@@ -17,6 +17,7 @@ import { ProductCollection } from "../../../lib/enums/product.enum";
 
 const actionDispatch = (dispatch: Dispatch) => ({
   setNewDishes: (data: Product[]) => dispatch(setNewDishes(data)),
+  setPopularDishes: (data: Product[]) => dispatch(setPopularDishes(data)),
 });
 
 const newDishesRetriever = createSelector(retrieveNewDishes, (newDishes) => ({
@@ -28,6 +29,7 @@ export default function HomePage() {
   const history = useHistory();
   const { setNewDishes } = actionDispatch(useDispatch());
   const { newDishes } = useSelector(newDishesRetriever);
+
   //HANDLERS
   const handleUrlChange = () => {
     history.push("/menu");
@@ -52,8 +54,6 @@ export default function HomePage() {
         console.log("Error, getProducts", err);
       });
   }, []);
-
-  console.log("serverAPI", serverApi);
 
   return (
     <>
