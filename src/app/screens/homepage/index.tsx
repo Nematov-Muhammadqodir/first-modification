@@ -12,6 +12,8 @@ import { setNewDishes } from "./slice";
 import { retrieveNewDishes } from "./selector";
 import { Product } from "../../../lib/types/product";
 import { serverApi } from "../../../lib/config";
+import ProductsService from "../../services/ProductService";
+import { ProductCollection } from "../../../lib/enums/product.enum";
 
 const actionDispatch = (dispatch: Dispatch) => ({
   setNewDishes: (data: Product[]) => dispatch(setNewDishes(data)),
@@ -35,7 +37,21 @@ export default function HomePage() {
     setInputValue(e.target.value);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const productService = new ProductsService();
+
+    productService
+      .getProducts({
+        page: 1,
+        limit: 3,
+        order: "createdAt",
+        productCollection: ProductCollection.PIZZA,
+      })
+      .then((data) => setNewDishes(data))
+      .catch((err) => {
+        console.log("Error, getProducts", err);
+      });
+  }, []);
 
   console.log("serverAPI", serverApi);
 

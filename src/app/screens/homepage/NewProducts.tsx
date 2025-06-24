@@ -1,6 +1,16 @@
 import { Button, Container, Stack } from "@mui/material";
+import { createSelector } from "reselect";
+import { retrieveNewDishes } from "./selector";
+import { useSelector } from "react-redux";
+import { serverApi } from "../../../lib/config";
+import { Product } from "../../../lib/types/product";
+
+const newDishesRetriever = createSelector(retrieveNewDishes, (newDishes) => ({
+  newDishes,
+}));
 
 export default function NewProducts() {
+  const { newDishes } = useSelector(newDishesRetriever);
   const arr = [1, 2, 3];
   return (
     <div
@@ -15,30 +25,29 @@ export default function NewProducts() {
             </div>
             <div>
               <p>
-                Discover our latest arrivals – fresh, stylish, and just for you.
+                Discover our latest arrivals - fresh, stylish, and just for you.
               </p>
             </div>
           </div>
 
           <div className="cart-main-container">
-            {arr.map((item) => {
+            {newDishes.map((item: Product) => {
+              console.log("productImages:", item.productImages);
+              const imagePath = `${serverApi}/${item.productImages}`;
               return (
-                <div className="cart-item-cont">
+                <div className="cart-item-cont" key={item._id}>
                   <div className="cart-img-container">
-                    <img src="/img/top-pizzas/top-pizza1.png" alt="" />
+                    <img src={imagePath} alt="" />
                   </div>
 
                   <div className="cart-product-info-container">
-                    <h2>Pepperoni Popper</h2>
-                    <p>
-                      Double pepperoni, mozzarella, spicy marinara sauce,
-                      crushed red pepper, black olives
-                    </p>
+                    <h2>{item.productName}</h2>
+                    <p>{item.productIngredients}</p>
                     <div className="cart-product-info-order">
                       <Button variant="text" sx={{ fontWeight: 600 }}>
                         Order Now
                       </Button>
-                      <span>from $14.99</span>
+                      <span>from ${item.productPrice}</span>
                     </div>
                   </div>
                 </div>
