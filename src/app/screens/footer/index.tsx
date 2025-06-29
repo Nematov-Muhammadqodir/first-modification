@@ -1,22 +1,33 @@
 import { Button, Container, Stack } from "@mui/material";
 import { useHistory } from "react-router-dom";
+import { CartItem } from "../../../lib/types/search";
+import useBasket from "../../hooks/useBasket";
+
 interface FooterProps {
-  count: number;
-  setCount: (value: number) => void;
+  cartItems: CartItem[];
+  onRemove: (item: CartItem) => void;
+  onDelete: (item: CartItem) => void;
+  onDeleteAll: () => void;
+  onAdd: (item: CartItem) => void;
 }
 
 export default function Footer(props: FooterProps) {
   const history = useHistory();
-  const { count, setCount } = props;
-  const cartItem = count;
+  const { onAdd, cartItems, onRemove, onDelete, onDeleteAll } = props;
 
+  const totalPrice = cartItems.reduce(
+    (sum, item) => sum + (item.price * item.quantity || 0),
+    0
+  );
+  const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
   //HANDLERS
   const handleUrlChange = () => {
     history.push("/cart");
   };
+
   return (
     <div className="footer-main-container">
-      {cartItem !== 0 ? (
+      {cartItems.length !== 0 ? (
         <Container>
           <Stack
             display={"flex"}
@@ -24,8 +35,8 @@ export default function Footer(props: FooterProps) {
             justifyContent={"space-between"}
           >
             <div className="navbar-btn-container">
-              <p>1 PIZZAS</p>
-              <p>$12.00</p>
+              <p>{totalQuantity} ITEMS</p>
+              <p>${totalPrice}</p>
             </div>
             <div>
               <Button

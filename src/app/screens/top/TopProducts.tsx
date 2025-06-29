@@ -3,6 +3,7 @@ import { createSelector } from "reselect";
 import { retrievePopularDishes } from "../homepage/selector";
 import { useSelector } from "react-redux";
 import { serverApi } from "../../../lib/config";
+import { TopProps } from ".";
 
 const popularDishesRetriever = createSelector(
   retrievePopularDishes,
@@ -11,7 +12,8 @@ const popularDishesRetriever = createSelector(
   })
 );
 // const { popularDishes } = useSelector(popularDishesRetriever);
-export default function TopProducts() {
+export default function TopProducts(props: TopProps) {
+  const { onAdd } = props;
   const { popularDishes } = useSelector(popularDishesRetriever);
   const arr = [1, 2, 3];
   return (
@@ -61,22 +63,35 @@ export default function TopProducts() {
           </div>
 
           <div className="cart-main-container">
-            {popularDishes.map((item) => {
-              const imgPath = `${serverApi}/${item.productImages}`;
+            {popularDishes.map((product) => {
+              const imgPath = `${serverApi}/${product.productImages}`;
               return (
-                <div className="cart-item-cont" key={item._id}>
+                <div className="cart-item-cont" key={product._id}>
                   <div className="cart-img-container">
                     <img src={imgPath} alt="" />
                   </div>
 
                   <div className="cart-product-info-container">
-                    <h2>{item.productName}</h2>
-                    <p>{item.productIngredients}</p>
+                    <h2>{product.productName}</h2>
+                    <p>{product.productIngredients}</p>
                     <div className="cart-product-info-order">
-                      <Button variant="text" sx={{ fontWeight: 600 }}>
+                      <Button
+                        variant="text"
+                        sx={{ fontWeight: 600 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onAdd({
+                            _id: product._id,
+                            quantity: 1,
+                            name: product.productName,
+                            price: product.productPrice,
+                            image: product.productImages,
+                          });
+                        }}
+                      >
                         Order Now
                       </Button>
-                      <span>from ${item.productPrice}</span>
+                      <span>from ${product.productPrice}</span>
                     </div>
                   </div>
                 </div>

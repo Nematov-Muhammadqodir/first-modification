@@ -1,20 +1,23 @@
 import { Box, Button, Container, Stack } from "@mui/material";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import useBasket from "../../hooks/useBasket";
+import { CartItem } from "../../../lib/types/search";
 
-interface CartInterface {
-  count: number;
+interface CartProps {
+  cartItems: CartItem[];
+  onRemove: (item: CartItem) => void;
+  onDelete: (item: CartItem) => void;
+  onDeleteAll: () => void;
+  onAdd: (item: CartItem) => void;
 }
-export default function Cart(props: CartInterface) {
-  const { count } = props;
-  const cartItem = [1, 2, 3];
-  const [cartItems, setCartItems] = useState(cartItem);
+export default function Cart(props: CartProps) {
+  const { onAdd, cartItems, onRemove, onDelete, onDeleteAll } = props;
+
+  const [cartItem, setCartItems] = useState(cartItems);
   const history = useHistory();
 
   //HANDLERS
-  const handleDeletAll = () => {
-    setCartItems([]);
-  };
 
   const handleBackMenu = () => {
     history.push("/menu");
@@ -47,11 +50,11 @@ export default function Cart(props: CartInterface) {
 
             <h2>Your cart</h2>
 
-            {cartItems.map((item, index) => {
+            {cartItems.map((product, index) => {
               return (
                 <Stack
                   className="cart-item-container"
-                  key={index}
+                  key={product._id}
                   flexDirection={"row"}
                   justifyContent={"space-between"}
                   sx={{ marginBottom: "20px" }}
@@ -62,16 +65,57 @@ export default function Cart(props: CartInterface) {
                     gap={"20px"}
                     alignItems={"center"}
                   >
-                    <span>1x</span>
-                    <p>Margherita</p>
+                    <span>{product.quantity}x</span>
+                    <p>{product.name}</p>
                   </Stack>
 
                   <div className="price-count-container">
-                    <span className="cart-item-price">€12.00</span>
-                    <Button variant="contained">-</Button>
-                    <p>{count}</p>
-                    <Button variant="contained">+</Button>
-                    <Button variant="contained">DELETE</Button>
+                    <span className="cart-item-price">
+                      €{product.price.toFixed(2)}
+                    </span>
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        onRemove({
+                          _id: product._id,
+                          quantity: 1,
+                          name: product.name,
+                          price: product.price,
+                          image: product.image,
+                        })
+                      }
+                    >
+                      -
+                    </Button>
+                    {/* <p>{count}</p> */}
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        onAdd({
+                          _id: product._id,
+                          quantity: 1,
+                          name: product.name,
+                          price: product.price,
+                          image: product.image,
+                        })
+                      }
+                    >
+                      +
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        onDelete({
+                          _id: product._id,
+                          quantity: 1,
+                          name: product.name,
+                          price: product.price,
+                          image: product.image,
+                        })
+                      }
+                    >
+                      DELETE
+                    </Button>
                   </div>
                 </Stack>
               );
@@ -88,7 +132,7 @@ export default function Cart(props: CartInterface) {
               <Button
                 className="clear-button"
                 variant="outlined"
-                onClick={handleDeletAll}
+                onClick={onDeleteAll}
               >
                 Clear cart
               </Button>

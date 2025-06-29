@@ -7,12 +7,18 @@ import { setPopularDishes } from "../homepage/slice";
 import { Product } from "../../../lib/types/product";
 import { Dispatch } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
+import { CartItem } from "../../../lib/types/search";
 
 const actionDispatch = (dispatch: Dispatch) => ({
   setPopularDishes: (data: Product[]) => dispatch(setPopularDishes(data)),
 });
 
-export default function Top() {
+export interface TopProps {
+  onAdd: (item: CartItem) => void;
+}
+
+export default function Top(props: TopProps) {
+  const { onAdd } = props;
   const { setPopularDishes } = actionDispatch(useDispatch());
   const products = useRouteMatch();
   useEffect(() => {
@@ -36,7 +42,7 @@ export default function Top() {
           <TopUsers />
         </Route>
         <Route path={`${products.path}/products`}>
-          <TopProducts />
+          <TopProducts onAdd={onAdd} />
         </Route>
       </Switch>
     </div>

@@ -76,6 +76,14 @@
   letter-spacing: 2px;
 }
 
+.pagination-section .hidden {
+  display: none;
+}
+
+.pagination-section .justify-left {
+  text-align: start;
+}
+
 /*   /* border: 1px solid black;
   padding: 5px;
   border-radius: 5px;

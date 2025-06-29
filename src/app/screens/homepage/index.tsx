@@ -14,6 +14,7 @@ import { Product } from "../../../lib/types/product";
 import { serverApi } from "../../../lib/config";
 import ProductsService from "../../services/ProductService";
 import { ProductCollection } from "../../../lib/enums/product.enum";
+import { CartItem } from "../../../lib/types/search";
 
 const actionDispatch = (dispatch: Dispatch) => ({
   setNewDishes: (data: Product[]) => dispatch(setNewDishes(data)),
@@ -24,7 +25,16 @@ const newDishesRetriever = createSelector(retrieveNewDishes, (newDishes) => ({
   newDishes,
 }));
 
-export default function HomePage() {
+export interface HomePageProps {
+  cartItems: CartItem[];
+  onRemove: (item: CartItem) => void;
+  onDelete: (item: CartItem) => void;
+  onDeleteAll: () => void;
+  onAdd: (item: CartItem) => void;
+}
+export default function HomePage(props: HomePageProps) {
+  const { onAdd, cartItems, onRemove, onDelete, onDeleteAll } = props;
+
   const [inputValue, setInputValue] = useState("");
   const history = useHistory();
   const { setNewDishes } = actionDispatch(useDispatch());
@@ -133,7 +143,13 @@ export default function HomePage() {
         </Container>
       </div>
 
-      <NewProducts />
+      <NewProducts
+        cartItems={cartItems}
+        onRemove={onRemove}
+        onDelete={onDelete}
+        onDeleteAll={onDeleteAll}
+        onAdd={onAdd}
+      />
     </>
   );
 }

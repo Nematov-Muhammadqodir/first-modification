@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../css/app.css";
-import { Link, Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 import HomePage from "./screens/homepage";
 import Footer from "./screens/footer";
 import Navbar from "./screens/navbar";
@@ -17,10 +17,17 @@ import "../css/top.css";
 import Order from "./screens/order";
 import OrderInfo from "./screens/order/OrderInfo";
 import Top from "./screens/top";
+import { CartItem } from "../lib/types/search";
+import useBasket from "./hooks/useBasket";
 
 function App() {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+
+  const cartJson: string | null = localStorage.getItem("cartData");
+  const currentCart = cartJson ? JSON.parse(cartJson) : [];
+
+  const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = useBasket();
 
   //Vaqtinchalik state
   const [count, setCount] = useState(0);
@@ -59,10 +66,16 @@ function App() {
       <Navbar />
       <Switch>
         <Route path="/top">
-          <Top />
+          <Top onAdd={onAdd} />
         </Route>
         <Route path="/menu">
-          <Menu count={count} setCount={setCount} />
+          <Menu
+            cartItems={cartItems}
+            onRemove={onRemove}
+            onDelete={onDelete}
+            onDeleteAll={onDeleteAll}
+            onAdd={onAdd}
+          />
         </Route>
         <Route path="/cart/new/:orderId">
           <OrderInfo />
@@ -71,13 +84,31 @@ function App() {
           <Order />
         </Route>
         <Route path="/cart">
-          <Cart count={count} />
+          <Cart
+            cartItems={cartItems}
+            onRemove={onRemove}
+            onDelete={onDelete}
+            onDeleteAll={onDeleteAll}
+            onAdd={onAdd}
+          />
         </Route>
         <Route path="/">
-          <HomePage />
+          <HomePage
+            cartItems={cartItems}
+            onRemove={onRemove}
+            onDelete={onDelete}
+            onDeleteAll={onDeleteAll}
+            onAdd={onAdd}
+          />
         </Route>
       </Switch>
-      <Footer count={count} setCount={setCount} />
+      <Footer
+        cartItems={cartItems}
+        onRemove={onRemove}
+        onDelete={onDelete}
+        onDeleteAll={onDeleteAll}
+        onAdd={onAdd}
+      />
     </>
   );
 }
