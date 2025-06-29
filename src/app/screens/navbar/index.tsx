@@ -1,5 +1,6 @@
 import { Button, Container, Stack } from "@mui/material";
 import { relative } from "path";
+import { NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const authMember = null;
@@ -19,6 +20,26 @@ export default function Navbar() {
             <a className="navbar-logo" href="/">
               Kevin Pizza's
             </a>
+          </div>
+
+          <div
+            style={{ display: "flex", flexDirection: "row", gap: 50 }}
+            className="navLinks"
+          >
+            <div className="fan_favorites">
+              <NavLink style={{}} to="/top/products">
+                Fan Favorites
+              </NavLink>
+            </div>
+            <div>
+              <NavLink to="/menu">Menu</NavLink>
+            </div>
+            <div>
+              <NavLink to="/cart">Cart</NavLink>
+            </div>
+            <div>
+              <NavLink to="/help">Help</NavLink>
+            </div>
           </div>
 
           {/* {authMember ? (

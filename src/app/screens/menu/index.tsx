@@ -1,16 +1,41 @@
-import { Button, Container, Stack, TextField } from "@mui/material";
+import {
+  Button,
+  Container,
+  Pagination,
+  PaginationItem,
+  Stack,
+  TextField,
+} from "@mui/material";
 import Divider from "../../components/divider";
 import { T } from "../../../lib/types/common";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setProducts } from "./slice";
+import { Product } from "../../../lib/types/product";
+import { createSelector } from "reselect";
+import { retrieveProducts } from "./selector";
+import { useEffect } from "react";
+import ProductsService from "../../services/ProductService";
+import { useDispatch } from "react-redux";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 interface MenuProps {
   count: number;
   setCount: (value: number) => void;
 }
 
+const actionDispatch = (dispatch: Dispatch) => ({
+  setProducts: (data: Product[]) => dispatch(setProducts(data)),
+});
+
+const productsRetriever = createSelector(retrieveProducts, (products) => ({
+  products,
+}));
+
+const menuItems = [1, 2, 3];
 export default function Menu(props: MenuProps) {
   const { count, setCount } = props;
-  const menuItems = [1, 2, 3];
-
+  const { setProducts } = actionDispatch(useDispatch());
   //HANDLERS
 
   const handleIncrease = () => {
@@ -19,6 +44,22 @@ export default function Menu(props: MenuProps) {
   const handleDecrease = () => {
     setCount(count - 1);
   };
+
+  useEffect(() => {
+    const productService = new ProductsService();
+
+    productService
+      .getProducts({
+        page: 1,
+        limit: 3,
+        order: "createdAt",
+      })
+      .then((data) => setProducts(data))
+      .catch((err) => {
+        console.log("Error, getProducts", err);
+      });
+  }, []);
+
   return (
     <div style={{ flex: 1 }} className="home-page-full-screen">
       <img
@@ -100,6 +141,26 @@ export default function Menu(props: MenuProps) {
               </div>
             );
           })}
+
+          <Stack
+            className="pagination-section"
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            <Pagination
+              count={3}
+              page={1}
+              renderItem={(item) => (
+                <PaginationItem
+                  components={{
+                    previous: ArrowBackIcon,
+                    next: ArrowForwardIcon,
+                  }}
+                  {...item}
+                  color={"secondary"}
+                />
+              )}
+            />
+          </Stack>
         </Stack>
       </Container>
     </div>
