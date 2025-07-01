@@ -19,10 +19,43 @@ import OrderInfo from "./screens/order/OrderInfo";
 import Top from "./screens/top";
 import { CartItem } from "../lib/types/search";
 import useBasket from "./hooks/useBasket";
+import { useGlobals } from "./hooks/useGlobals";
+import MemberService from "./services/MemberService";
+import { sweetErrorHandling, sweetTopSuccessAlert } from "../lib/sweetAlert";
+import { Messages } from "../lib/config";
+import { MouseEvent } from "react";
+import AuthenticationModal from "./components/auth";
 
 function App() {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+
+  const { setAuthMember } = useGlobals();
+  const [signupOpen, setSignupOpen] = useState<boolean>(false);
+  const [loginOpen, setLoginOpen] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+  const handleSignupClose = () => setSignupOpen(false);
+  const handleLoginClose = () => setLoginOpen(false);
+  const handleLogoutClick = (e: MouseEvent<HTMLElement>) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleCloseLogout = () => setAnchorEl(null);
+
+  const handleLogoutRequest = async () => {
+    try {
+      const member = new MemberService();
+      await member.logout();
+
+      await sweetTopSuccessAlert("success", 700);
+
+      setAuthMember(null);
+    } catch (err) {
+      console.log(err);
+      sweetErrorHandling(Messages.error1);
+    }
+  };
 
   const cartJson: string | null = localStorage.getItem("cartData");
   const currentCart = cartJson ? JSON.parse(cartJson) : [];
@@ -63,7 +96,14 @@ function App() {
           <CircularProgress />
         </div>
       )}
-      <Navbar />
+      <Navbar
+        setSignupOpen={setSignupOpen}
+        setLoginOpen={setLoginOpen}
+        anchorEl={anchorEl}
+        handleLogoutClick={handleLogoutClick}
+        handleCloseLogout={handleCloseLogout}
+        handleLogoutRequest={handleLogoutRequest}
+      />
       <Switch>
         <Route path="/top">
           <Top onAdd={onAdd} />
@@ -108,6 +148,12 @@ function App() {
         onDelete={onDelete}
         onDeleteAll={onDeleteAll}
         onAdd={onAdd}
+      />
+      <AuthenticationModal
+        signupOpen={signupOpen}
+        loginOpen={loginOpen}
+        handleSignupClose={handleSignupClose}
+        handleLoginClose={handleLoginClose}
       />
     </>
   );

@@ -4,6 +4,7 @@ import { retrievePopularDishes } from "../homepage/selector";
 import { useSelector } from "react-redux";
 import { serverApi } from "../../../lib/config";
 import { TopProps } from ".";
+import { useGlobals } from "../../hooks/useGlobals";
 
 const popularDishesRetriever = createSelector(
   retrievePopularDishes,
@@ -13,6 +14,8 @@ const popularDishesRetriever = createSelector(
 );
 // const { popularDishes } = useSelector(popularDishesRetriever);
 export default function TopProducts(props: TopProps) {
+  const { authMember } = useGlobals();
+
   const { onAdd } = props;
   const { popularDishes } = useSelector(popularDishesRetriever);
   const arr = [1, 2, 3];
@@ -75,22 +78,25 @@ export default function TopProducts(props: TopProps) {
                     <h2>{product.productName}</h2>
                     <p>{product.productIngredients}</p>
                     <div className="cart-product-info-order">
-                      <Button
-                        variant="text"
-                        sx={{ fontWeight: 600 }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onAdd({
-                            _id: product._id,
-                            quantity: 1,
-                            name: product.productName,
-                            price: product.productPrice,
-                            image: product.productImages,
-                          });
-                        }}
-                      >
-                        Order Now
-                      </Button>
+                      {authMember ? (
+                        <Button
+                          variant="text"
+                          sx={{ fontWeight: 600 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onAdd({
+                              _id: product._id,
+                              quantity: 1,
+                              name: product.productName,
+                              price: product.productPrice,
+                              image: product.productImages,
+                            });
+                          }}
+                        >
+                          Order Now
+                        </Button>
+                      ) : null}
+
                       <span>from ${product.productPrice}</span>
                     </div>
                   </div>

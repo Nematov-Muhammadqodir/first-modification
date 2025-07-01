@@ -5,12 +5,14 @@ import { useSelector } from "react-redux";
 import { serverApi } from "../../../lib/config";
 import { Product } from "../../../lib/types/product";
 import { HomePageProps } from ".";
+import { useGlobals } from "../../hooks/useGlobals";
 
 const newDishesRetriever = createSelector(retrieveNewDishes, (newDishes) => ({
   newDishes,
 }));
 
 export default function NewProducts(props: HomePageProps) {
+  const { authMember } = useGlobals();
   const { onAdd, cartItems, onRemove, onDelete, onDeleteAll } = props;
 
   const { newDishes } = useSelector(newDishesRetriever);
@@ -46,22 +48,25 @@ export default function NewProducts(props: HomePageProps) {
                     <h2>{product.productName}</h2>
                     <p>{product.productIngredients}</p>
                     <div className="cart-product-info-order">
-                      <Button
-                        variant="text"
-                        sx={{ fontWeight: 600 }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onAdd({
-                            _id: product._id,
-                            quantity: 1,
-                            name: product.productName,
-                            price: product.productPrice,
-                            image: product.productImages,
-                          });
-                        }}
-                      >
-                        Order Now
-                      </Button>
+                      {authMember ? (
+                        <Button
+                          variant="text"
+                          sx={{ fontWeight: 600 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onAdd({
+                              _id: product._id,
+                              quantity: 1,
+                              name: product.productName,
+                              price: product.productPrice,
+                              image: product.productImages,
+                            });
+                          }}
+                        >
+                          Order Now
+                        </Button>
+                      ) : null}
+
                       <span>from ${product.productPrice}</span>
                     </div>
                   </div>

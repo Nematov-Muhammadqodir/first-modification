@@ -21,6 +21,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { ProductCollection } from "../../../lib/enums/product.enum";
 import { serverApi } from "../../../lib/config";
 import { CartItem } from "../../../lib/types/search";
+import { useGlobals } from "../../hooks/useGlobals";
 
 interface MenuProps {
   cartItems: CartItem[];
@@ -39,6 +40,7 @@ const productsRetriever = createSelector(retrieveProducts, (products) => ({
 }));
 
 export default function Menu(props: MenuProps) {
+  const { authMember } = useGlobals();
   const { onAdd, cartItems, onRemove, onDelete, onDeleteAll } = props;
   const { products } = useSelector(productsRetriever);
 
@@ -177,21 +179,23 @@ export default function Menu(props: MenuProps) {
                       <p>views {product.productViews}</p>
                     </div>
 
-                    <Button
-                      variant="contained"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onAdd({
-                          _id: product._id,
-                          quantity: 1,
-                          name: product.productName,
-                          price: product.productPrice,
-                          image: product.productImages,
-                        });
-                      }}
-                    >
-                      Add to cart
-                    </Button>
+                    {authMember ? (
+                      <Button
+                        variant="contained"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onAdd({
+                            _id: product._id,
+                            quantity: 1,
+                            name: product.productName,
+                            price: product.productPrice,
+                            image: product.productImages,
+                          });
+                        }}
+                      >
+                        Add to cart
+                      </Button>
+                    ) : null}
 
                     {/* <div className="price-count-container">
                         <Button variant="contained" onClick={handleDecrease}>

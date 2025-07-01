@@ -1,6 +1,10 @@
 .footer-main-container {
   background-color: rgb(97, 91, 91);
   color: white;
+  /* height: 100px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .navbar-btn-container {

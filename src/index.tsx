@@ -9,6 +9,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./css/index.css";
 import theme from "./app/theme";
+import ContextProvider from "./app/context/ContextProvider";
 
 const container = document.getElementById("root");
 const root = createRoot(container!); // the "!" tells TypeScript that container will not be null
@@ -16,12 +17,14 @@ const root = createRoot(container!); // the "!" tells TypeScript that container 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Router>
-          <App />
-        </Router>
-      </ThemeProvider>
+      <ContextProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Router>
+            <App />
+          </Router>
+        </ThemeProvider>
+      </ContextProvider>
     </Provider>
   </React.StrictMode>
 );
