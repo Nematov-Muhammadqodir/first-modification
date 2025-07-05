@@ -150,7 +150,7 @@ export default function Navbar(props: NavbarProps) {
           >
             <MenuItem onClick={handleLogoutRequest}>
               <ListItemIcon>
-                <Logout fontSize="small" style={{ color: "blue" }} />
+                <Logout fontSize="small" style={{ color: "red" }} />
               </ListItemIcon>
               Logout
             </MenuItem>

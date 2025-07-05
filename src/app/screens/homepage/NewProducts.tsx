@@ -20,8 +20,95 @@ export default function NewProducts(props: HomePageProps) {
   return (
     <div
       className="top-products-screen"
-      style={{ flex: 1, backgroundColor: "whitesmoke", marginTop: "70px" }}
+      style={{
+        flex: 1,
+        backgroundColor: "#fffbe6", // Yellowish background
+        // marginTop: "70px",
+        position: "relative",
+        overflow: "hidden",
+      }}
     >
+      {/* 🎉 Emoji Background */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      >
+        {[
+          "🍕",
+          "🍔",
+          "🌭",
+          "🍟",
+          "🧀",
+          "🥓",
+          "🍗",
+          "🥪",
+          "🍳",
+          "🥞",
+          "🍩",
+          "🍪",
+          "🍕",
+          "🍔",
+          "🍔",
+        ].map((emoji, index) => {
+          const randomX = Math.random() * 100;
+          const randomY = Math.random() * 100;
+          return (
+            <span
+              key={index}
+              style={{
+                position: "absolute",
+                left: `${randomX}%`,
+                top: `${randomY}%`,
+                fontSize: "5.5rem",
+                opacity: 0.7,
+                transition: "transform 0.4s ease, opacity 1s ease",
+                userSelect: "none",
+              }}
+              onMouseEnter={(e) => {
+                const emojis = [
+                  "🍕",
+                  "🍔",
+                  "🌭",
+                  "🍟",
+                  "🧀",
+                  "🥓",
+                  "🍗",
+                  "🥪",
+                  "🍳",
+                  "🥞",
+                  "🍩",
+                  "🍪",
+                  "🍰",
+                  "🍫",
+                  "🍿",
+                ];
+                const randomEmoji =
+                  emojis[Math.floor(Math.random() * emojis.length)];
+                e.currentTarget.textContent = randomEmoji;
+
+                (e.currentTarget as HTMLSpanElement).style.opacity = "1.1";
+                (e.currentTarget as HTMLSpanElement).style.transform =
+                  "translateY(-15px) scale(1.4) rotate(20deg)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLSpanElement).style.opacity = "0.2";
+                (e.currentTarget as HTMLSpanElement).style.transform = "none";
+              }}
+            >
+              {emoji}
+            </span>
+          );
+        })}
+      </div>
+
+      {/* 🔽 Your original content starts here */}
       <Container className="top-products-container">
         <Stack>
           <div className="top-products-intro">
@@ -39,7 +126,34 @@ export default function NewProducts(props: HomePageProps) {
             {newDishes.map((product: Product) => {
               const imagePath = `${serverApi}/${product.productImages}`;
               return (
-                <div className="cart-item-cont" key={product._id}>
+                <div
+                  className="cart-item-cont"
+                  key={product._id}
+                  style={{
+                    transition: "transform 0.5s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    const container = e.currentTarget as HTMLDivElement;
+                    container.style.transform = "scale(1.03)";
+                    const img = container.querySelector(
+                      "img"
+                    ) as HTMLImageElement;
+                    if (img) {
+                      img.style.transition = "transform 0.6s ease";
+                      img.style.transform = "rotate(360deg)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    const container = e.currentTarget as HTMLDivElement;
+                    container.style.transform = "scale(1)";
+                    const img = container.querySelector(
+                      "img"
+                    ) as HTMLImageElement;
+                    if (img) {
+                      img.style.transform = "rotate(0deg)";
+                    }
+                  }}
+                >
                   <div className="cart-img-container">
                     <img src={imagePath} alt="" />
                   </div>

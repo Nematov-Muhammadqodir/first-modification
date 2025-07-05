@@ -68,22 +68,64 @@ export default function HomePage(props: HomePageProps) {
   return (
     <>
       <div className="home-page-full-screen" style={{ flex: 1 }}>
-        <img
-          src="/pizzaImages/11039274.png"
-          alt="Pizza Background"
-          className="responsive-bg-image"
-        />
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            zIndex: -2,
+            overflow: "hidden",
+          }}
+        >
+          <iframe
+            src="https://www.youtube.com/embed/wX8foM1z7S0?autoplay=1&mute=1&loop=1&playlist=wX8foM1z7S0&controls=0&modestbranding=1&showinfo=0&rel=0"
+            frameBorder="0"
+            allow="autoplay; fullscreen"
+            allowFullScreen
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              pointerEvents: "none",
+            }}
+          ></iframe>
+          {/* Dark overlay */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0,0,0,0.5)", // darker = more visible text
+              zIndex: 1,
+            }}
+          ></div>
+        </div>
+
         <Container maxWidth="sm" className="home-page-content">
           <Stack>
-            <div className="home-page-main">
+            <div
+              className="home-page-main"
+              style={{
+                position: "relative",
+                zIndex: 2,
+                color: "white",
+                textShadow: "1px 1px 4px rgba(0,0,0,0.9)",
+              }}
+            >
               <div className="welcome">
                 <h1>Your Pizza Party Starts Here!</h1>
                 <h2>
                   Gather your friends and family and enjoy the best pizza in
-                  town. Freshly made and delivered hot!
+                  town.
                 </h2>
               </div>
-
+              {/* 
               <div className="homePage-input-container">
                 <p>👋 Welcome! Please start by telling us your name:</p>
                 <TextField
@@ -105,8 +147,8 @@ export default function HomePage(props: HomePageProps) {
                     },
                   }}
                 />
-              </div>
-              {inputValue.length !== 0 ? (
+              </div> */}
+              {/* {inputValue.length !== 0 ? (
                 <Button
                   className="continue-btn"
                   variant="contained"
@@ -137,7 +179,7 @@ export default function HomePage(props: HomePageProps) {
                 >
                   CONTINUE ORDERING, {inputValue}
                 </Button>
-              ) : null}
+              ) : null} */}
             </div>
           </Stack>
         </Container>
