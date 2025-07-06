@@ -1,67 +1,55 @@
-import { Button, Container, Stack, TextField } from "@mui/material";
-import { useHistory } from "react-router-dom";
+import { Container, Stack } from "@mui/material";
 
-export default function Order() {
+export default function OrderInfo() {
   return (
     <div
       style={{
         flex: 1,
-        marginTop: "80px",
+        marginTop: "156px",
       }}
-      className="order-main-container"
     >
+      <img src="" alt="" />
       <img
         src="/pizzaImages/11039274.png"
         alt="Pizza Background"
         className="responsive-bg-image"
       />
-      <Container>
-        <Stack className="order-container">
-          <h2 style={{ textAlign: "center" }}>Ready to order? Let's go!</h2>
-          <Stack gap={"20px"}>
-            <Stack alignItems={"center"}>
-              <label htmlFor="outlined-basic">First Name</label>{" "}
-              <TextField
-                required
-                type="text"
-                id="outlined-basic"
-                label="Your name"
-                variant="outlined"
-                sx={{
-                  width: "80%",
-                }}
-              />
-            </Stack>
-            <Stack alignItems={"center"}>
-              <label htmlFor="outlined-basic2">Phone number</label>{" "}
-              <TextField
-                required
-                type="text"
-                id="outlined-basic2"
-                label="Your phone number"
-                variant="outlined"
-                sx={{
-                  width: "80%",
-                }}
-              />
-            </Stack>
-            <Stack alignItems={"center"}>
-              <label htmlFor="outlined-basic3">Address</label>{" "}
-              <TextField
-                required
-                type="text"
-                id="outlined-basic3"
-                label="Your address"
-                variant="outlined"
-                sx={{
-                  width: "80%",
-                }}
-              />
-            </Stack>
+      <Container maxWidth={"sm"} className="order-info-container">
+        <Stack>
+          <Stack
+            flexDirection={"row"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+          >
+            <h3>Order __id__ status</h3>
+            <div className="prepairing">Prepairing order</div>
           </Stack>
-          <Button sx={{ marginTop: "40px" }} variant="contained">
-            Order now
-          </Button>
+          <Stack
+            flexDirection={"row"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+          >
+            <h4>Only 51 minutes left 😃</h4>
+            <div> Estimated delivery: May 26, 10:38 PM</div>
+          </Stack>
+
+          <Stack
+            sx={{ fontWeight: "600", letterSpacing: "1px" }}
+            flexDirection={"row"}
+            gap={"20px"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            className="ordered-item-info"
+          >
+            <Stack>
+              <div>
+                <span>1x</span>
+                <p>Margherita</p>
+              </div>
+              <p>tomato, mozzarella, prosciutto</p>
+            </Stack>
+            <p>€15.00</p>
+          </Stack>
         </Stack>
       </Container>
     </div>

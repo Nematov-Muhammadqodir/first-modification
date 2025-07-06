@@ -117,11 +117,8 @@ function App() {
             onAdd={onAdd}
           />
         </Route>
-        <Route path="/cart/new/:orderId">
-          <OrderInfo />
-        </Route>
         <Route path="/cart/new">
-          <Order />
+          <OrderInfo />
         </Route>
         <Route path="/cart">
           <Cart

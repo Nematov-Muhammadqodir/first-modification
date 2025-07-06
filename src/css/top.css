@@ -50,6 +50,9 @@
   width: 100px;
   height: 100px;
 }
+.top-products-screen {
+  margin-top: 76px;
+}
 
 .top-products-screen .top-products-intro {
   text-align: center;

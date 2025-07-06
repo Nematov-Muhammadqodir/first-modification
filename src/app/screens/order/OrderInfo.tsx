@@ -5,7 +5,7 @@ export default function OrderInfo() {
     <div
       style={{
         flex: 1,
-        marginTop: "80px",
+        marginTop: "156px",
       }}
     >
       <img src="" alt="" />
@@ -21,7 +21,7 @@ export default function OrderInfo() {
             alignItems={"center"}
             justifyContent={"space-between"}
           >
-            <h3>Order __id__ status</h3>
+            <h3>Order status</h3>
             <div className="prepairing">Prepairing order</div>
           </Stack>
           <Stack

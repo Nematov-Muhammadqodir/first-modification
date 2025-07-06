@@ -92,7 +92,10 @@ export default function Menu(props: MenuProps) {
   }, [prodCollection, search, order, pagination]);
 
   return (
-    <div style={{ flex: 1 }} className="home-page-full-screen">
+    <div
+      style={{ flex: 1, marginTop: "76px", marginBottom: "57px" }}
+      className="home-page-full-screen"
+    >
       <img
         src="/pizzaImages/11040007.png"
         alt="Pizza Background"

@@ -1,6 +1,6 @@
 import { Box, Button, Container, Stack } from "@mui/material";
 import { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import useBasket from "../../hooks/useBasket";
 import { CartItem } from "../../../lib/types/search";
 
@@ -27,7 +27,7 @@ export default function Cart(props: CartProps) {
   };
 
   return (
-    <div style={{ flex: 1, marginTop: "40px" }}>
+    <div style={{ flex: 1, marginTop: "120px" }}>
       <img
         src="/pizzaImages/11040007.png"
         alt="Pizza Background"
@@ -127,7 +127,7 @@ export default function Cart(props: CartProps) {
                 variant="contained"
                 onClick={handleCartInfoUrl}
               >
-                Order
+                <NavLink to="/cart/new/:orderId">Order</NavLink>
               </Button>
               <Button
                 className="clear-button"

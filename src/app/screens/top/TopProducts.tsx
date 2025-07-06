@@ -20,7 +20,10 @@ export default function TopProducts(props: TopProps) {
   const { popularDishes } = useSelector(popularDishesRetriever);
   const arr = [1, 2, 3];
   return (
-    <div className="top-products-screen" style={{ flex: 1 }}>
+    <div
+      className="top-products-screen"
+      style={{ flex: 1, marginBottom: "60px" }}
+    >
       <Container className="top-products-container">
         <img
           src="/img/absoluteImages/grip1.png"
