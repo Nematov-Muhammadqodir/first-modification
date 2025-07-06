@@ -1,8 +1,10 @@
-import { Box, Button, Container, Stack } from "@mui/material";
 import { useState } from "react";
+import { Box, Button, Container, Stack } from "@mui/material";
 import { NavLink, useHistory } from "react-router-dom";
 import useBasket from "../../hooks/useBasket";
 import { CartItem } from "../../../lib/types/search";
+import { sweetErrorHandling } from "../../../lib/sweetAlert";
+import OrderService from "../../services/OrderService";
 
 interface CartProps {
   cartItems: CartItem[];
@@ -27,8 +29,17 @@ export default function Cart(props: CartProps) {
   const handleBackMenu = () => {
     history.push("/menu");
   };
-  const handleCartInfoUrl = () => {
-    history.push("/cart/new");
+
+  const processOrderHandler = async () => {
+    try {
+      const orderService = new OrderService();
+      await orderService.createOrder(cartItems);
+      onDeleteAll();
+      history.push("/cart/new");
+    } catch (err) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
   };
 
   return (
@@ -130,9 +141,9 @@ export default function Cart(props: CartProps) {
               <Button
                 className="order-button"
                 variant="contained"
-                onClick={handleCartInfoUrl}
+                onClick={processOrderHandler}
               >
-                <NavLink to="/cart/new/:orderId">Order</NavLink>
+                Order
               </Button>
               <Button
                 className="clear-button"

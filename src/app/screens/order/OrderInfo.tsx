@@ -1,10 +1,22 @@
-import { Container, Stack } from "@mui/material";
+import { Button, Container, Stack } from "@mui/material";
 import { Dispatch } from "@reduxjs/toolkit";
-import { Order } from "../../../lib/types/order";
+import {
+  Order,
+  OrderInquery,
+  OrderUpdateInput,
+} from "../../../lib/types/order";
 import { setFinishedOrders, setProcessOrders } from "./slice";
 import { createSelector } from "reselect";
 import { retrieveFinishedOrders, retrieveProcessOrders } from "./selector";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import OrderService from "../../services/OrderService";
+import { OrderStatus } from "../../../lib/enums/order.enum";
+import {
+  sweetErrorHandling,
+  sweetTopSuccessAlert,
+} from "../../../lib/sweetAlert";
+import { useHistory } from "react-router-dom";
 
 const actionDispatch = (dispatch: Dispatch) => ({
   setProcessOrders: (data: Order[]) => dispatch(setProcessOrders(data)),
@@ -13,8 +25,8 @@ const actionDispatch = (dispatch: Dispatch) => ({
 
 const processOrderRetriever = createSelector(
   retrieveProcessOrders,
-  (products) => ({
-    products,
+  (orders) => ({
+    orders,
   })
 );
 const finishedOrderRetriever = createSelector(
@@ -26,6 +38,36 @@ const finishedOrderRetriever = createSelector(
 
 export default function OrderInfo() {
   const { setProcessOrders, setFinishedOrders } = actionDispatch(useDispatch());
+  const { orders } = useSelector(processOrderRetriever);
+  const history = useHistory();
+
+  useEffect(() => {
+    const orderService = new OrderService();
+    const orderInquery: OrderInquery = {
+      page: 1,
+      limit: 20,
+      orderStatus: OrderStatus.PAUSE,
+    };
+
+    orderService
+      .getMyOrders(orderInquery)
+      .then((data) => {
+        console.log("useEffect data", data);
+        return setProcessOrders(data);
+      })
+      .catch((err) => {
+        console.log("Error shu yerda:", err);
+        sweetErrorHandling(err);
+      });
+  }, []);
+
+  const handleOrderStatus = async (input: OrderUpdateInput) => {
+    const orderService = new OrderService();
+    await orderService.updateOrderStatus(input);
+    history.push("/");
+    sweetTopSuccessAlert("Your order successfully ordered");
+  };
+
   return (
     <div
       style={{
@@ -33,13 +75,30 @@ export default function OrderInfo() {
         marginTop: "156px",
       }}
     >
-      <img src="" alt="" />
       <img
-        src="/pizzaImages/11039274.png"
+        src="/pizzaImages/pizza.jpg"
         alt="Pizza Background"
         className="responsive-bg-image"
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          filter: "brightness(40%)", // dims the image
+          position: "absolute",
+          top: 0,
+          left: 0,
+          zIndex: -1,
+        }}
       />
       <Container maxWidth={"sm"} className="order-info-container">
+        <div className="emoji-decorations">
+          <span>🍕</span>
+          <span>🧀</span>
+          <span>🍄</span>
+          <span>🌶️</span>
+          <span>🍅</span>
+          <span>🥓</span>
+        </div>
         <Stack>
           <Stack
             flexDirection={"row"}
@@ -59,7 +118,12 @@ export default function OrderInfo() {
           </Stack>
 
           <Stack
-            sx={{ fontWeight: "600", letterSpacing: "1px" }}
+            sx={{
+              fontWeight: "600",
+              letterSpacing: "1px",
+              height: "300px",
+              overflow: "scroll",
+            }}
             flexDirection={"row"}
             gap={"20px"}
             alignItems={"center"}
@@ -67,13 +131,38 @@ export default function OrderInfo() {
             className="ordered-item-info"
           >
             <Stack>
-              <div>
-                <span>1x</span>
-                <p>Margherita</p>
-              </div>
-              <p>tomato, mozzarella, prosciutto</p>
+              {orders.map((order) => {
+                return (
+                  <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <p>Delivery €{order.orderDelivery}</p>
+                      <span>Total amount: €{order.orderTotal}</span>
+                    </div>
+                    <Button
+                      onClick={() =>
+                        handleOrderStatus({
+                          orderId: order._id,
+                          orderStatus: OrderStatus.DELETE,
+                        })
+                      }
+                      variant="outlined"
+                      sx={{ marginTop: "20px" }}
+                    >
+                      Finish the order
+                    </Button>
+                    <p>
+                      ---------------------------------------------------------------------------------------------
+                    </p>
+                  </div>
+                );
+              })}
             </Stack>
-            <p>€15.00</p>
           </Stack>
         </Stack>
       </Container>
