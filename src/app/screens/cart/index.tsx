@@ -13,9 +13,14 @@ interface CartProps {
 }
 export default function Cart(props: CartProps) {
   const { onAdd, cartItems, onRemove, onDelete, onDeleteAll } = props;
-
   const [cartItem, setCartItems] = useState(cartItems);
   const history = useHistory();
+
+  const itemsPrice: number = cartItems.reduce((acc: number, cur: CartItem) => {
+    return acc + cur.price * cur.quantity;
+  }, 0);
+  const shippingCost = itemsPrice < 100 ? 5 : 0;
+  const totalPrice = itemsPrice + shippingCost;
 
   //HANDLERS
 

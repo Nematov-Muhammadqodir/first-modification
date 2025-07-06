@@ -1,6 +1,31 @@
 import { Container, Stack } from "@mui/material";
+import { Dispatch } from "@reduxjs/toolkit";
+import { Order } from "../../../lib/types/order";
+import { setFinishedOrders, setProcessOrders } from "./slice";
+import { createSelector } from "reselect";
+import { retrieveFinishedOrders, retrieveProcessOrders } from "./selector";
+import { useDispatch } from "react-redux";
+
+const actionDispatch = (dispatch: Dispatch) => ({
+  setProcessOrders: (data: Order[]) => dispatch(setProcessOrders(data)),
+  setFinishedOrders: (data: Order[]) => dispatch(setFinishedOrders(data)),
+});
+
+const processOrderRetriever = createSelector(
+  retrieveProcessOrders,
+  (products) => ({
+    products,
+  })
+);
+const finishedOrderRetriever = createSelector(
+  retrieveFinishedOrders,
+  (products) => ({
+    products,
+  })
+);
 
 export default function OrderInfo() {
+  const { setProcessOrders, setFinishedOrders } = actionDispatch(useDispatch());
   return (
     <div
       style={{

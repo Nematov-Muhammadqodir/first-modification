@@ -3,6 +3,7 @@ import HomePageReducer from "./screens/homepage/slice";
 
 import reduxLogger from "redux-logger";
 import MenuPageReducer from "./screens/menu/slice";
+import OrdersPageReducer from "./screens/order/slice";
 
 export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
@@ -11,6 +12,7 @@ export const store = configureStore({
   reducer: {
     homePage: HomePageReducer,
     menuPage: MenuPageReducer,
+    ordersPage: OrdersPageReducer,
   },
 });
 

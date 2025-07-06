@@ -1,9 +1,11 @@
+import { Order } from "./order";
 import { Product } from "./product";
 
 export interface AppRootState {
   homePage: HomePageState;
   productsPage: ProductsPageState;
   menuPage: MenuPageState;
+  ordersPage: OrderPageState;
 }
 
 //HOMEPAGE
@@ -21,3 +23,7 @@ export interface MenuPageState {
 }
 
 //ORDERS PAGE
+export interface OrderPageState {
+  processOrders: Order[];
+  finishedOrders: Order[];
+}
