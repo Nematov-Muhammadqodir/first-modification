@@ -10,6 +10,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./css/index.css";
 import theme from "./app/theme";
 import ContextProvider from "./app/context/ContextProvider";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const container = document.getElementById("root");
 const root = createRoot(container!); // the "!" tells TypeScript that container will not be null
@@ -21,7 +22,9 @@ root.render(
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Router>
-            <App />
+            <GoogleOAuthProvider clientId="455090928481-oa2nc82u506svl2qj6bschdeap5a270h.apps.googleusercontent.com">
+              <App />
+            </GoogleOAuthProvider>
           </Router>
         </ThemeProvider>
       </ContextProvider>

@@ -3,9 +3,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
-import { Fab, Stack, TextField } from "@mui/material";
+import { Fab, Stack, TextField, Divider, Box } from "@mui/material";
 import styled from "styled-components";
 import LoginIcon from "@mui/icons-material/Login";
+import { GoogleLogin } from "@react-oauth/google";
 import { T } from "../../../lib/types/common";
 import { Messages } from "../../../lib/config";
 import MemberService from "../../services/MemberService";
@@ -120,8 +121,34 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
     }
   };
 
+  const handleGoogleLoginSuccess = async (credentialResponse: any) => {
+    const token = credentialResponse?.credential;
+    if (!token) return;
+
+    try {
+      const res = await fetch("http://localhost:3011/member/google-login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ token }),
+      });
+
+      if (!res.ok) throw new Error("Google login failed");
+
+      const user = await res.json();
+      setAuthMember(user);
+      handleLoginClose();
+    } catch (err) {
+      console.error(err);
+      sweetErrorHandling(err).then();
+    }
+  };
+
   return (
     <div>
+      {/* SIGNUP MODAL */}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -201,7 +228,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
             <ModalImg src={"/img/login-unsplash.jpg"} alt="camera" />
             <Stack
               sx={{
-                marginLeft: "65px",
+                // marginLeft: "65px",
                 marginTop: "25px",
                 alignItems: "center",
               }}
@@ -221,6 +248,7 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 type={"password"}
                 onChange={handlePassword}
               />
+
               <Fab
                 sx={{ marginTop: "27px", width: "120px" }}
                 variant={"extended"}
@@ -230,6 +258,19 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 <LoginIcon sx={{ mr: 1 }} />
                 Login
               </Fab>
+
+              {/* Divider & Google Login */}
+              <Divider sx={{ width: "100%", marginY: 2 }} />
+
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <GoogleLogin
+                  onSuccess={handleGoogleLoginSuccess}
+                  onError={() => {
+                    console.log("Google login failed");
+                  }}
+                  width="280"
+                />
+              </Box>
             </Stack>
           </Stack>
         </Fade>

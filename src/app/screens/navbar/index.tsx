@@ -6,7 +6,7 @@ import {
   MenuItem,
   Stack,
 } from "@mui/material";
-import { relative } from "path";
+// import { relative } from "path";
 import { NavLink } from "react-router-dom";
 import { useGlobals } from "../../hooks/useGlobals";
 import { serverApi } from "../../../lib/config";
@@ -110,6 +110,7 @@ export default function Navbar(props: NavbarProps) {
               }
               aria-haspopup={"true"}
               onClick={handleLogoutClick}
+              alt=""
             />
           )}
 
