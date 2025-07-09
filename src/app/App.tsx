@@ -14,6 +14,7 @@ import "../css/menu.css";
 import "../css/cart.css";
 import "../css/order.css";
 import "../css/top.css";
+import "../css/like.css";
 import Order from "./screens/order";
 import OrderInfo from "./screens/order/OrderInfo";
 import Top from "./screens/top";
@@ -25,6 +26,9 @@ import { sweetErrorHandling, sweetTopSuccessAlert } from "../lib/sweetAlert";
 import { Messages } from "../lib/config";
 import { MouseEvent } from "react";
 import AuthenticationModal from "./components/auth";
+import ChosenMenu from "./screens/menu/ChosenMenu";
+import FAQ from "./screens/faq";
+import LikedMenu from "./screens/likedProducts";
 
 function App() {
   const location = useLocation();
@@ -109,14 +113,9 @@ function App() {
           <Top onAdd={onAdd} />
         </Route>
         <Route path="/menu">
-          <Menu
-            cartItems={cartItems}
-            onRemove={onRemove}
-            onDelete={onDelete}
-            onDeleteAll={onDeleteAll}
-            onAdd={onAdd}
-          />
+          <Menu onAdd={onAdd} cartItems={cartItems} />
         </Route>
+
         <Route path="/cart/new">
           <OrderInfo />
         </Route>
@@ -128,6 +127,13 @@ function App() {
             onDeleteAll={onDeleteAll}
             onAdd={onAdd}
           />
+        </Route>
+        <Route path="/likedProducts">
+          <LikedMenu />
+        </Route>
+
+        <Route path="/faq">
+          <FAQ />
         </Route>
         <Route path="/">
           <HomePage

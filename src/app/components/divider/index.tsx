@@ -15,8 +15,8 @@ const DividerComponent = styled.span<IDividerProps>`
   margin: 8px 0;
 `;
 
-function Divider(props: IDividerProps) {
+function Dividerr(props: IDividerProps) {
   return <DividerComponent {...props} />;
 }
 
-export default Divider;
+export default Dividerr;

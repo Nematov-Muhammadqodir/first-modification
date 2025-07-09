@@ -6,6 +6,7 @@ export interface AppRootState {
   productsPage: ProductsPageState;
   menuPage: MenuPageState;
   ordersPage: OrderPageState;
+  likedProductsPage: LikedProductPageState;
 }
 
 //HOMEPAGE
@@ -20,10 +21,17 @@ export interface ProductsPageState {
 }
 export interface MenuPageState {
   products: Product[];
+  chosenProduct: Product | null;
 }
 
 //ORDERS PAGE
 export interface OrderPageState {
   processOrders: Order[];
   finishedOrders: Order[];
+}
+
+//LIKED PRODUCTS PAGE
+
+export interface LikedProductPageState {
+  products: Product[];
 }

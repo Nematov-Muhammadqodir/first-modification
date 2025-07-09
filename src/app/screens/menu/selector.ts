@@ -7,3 +7,7 @@ export const retrieveProducts = createSelector(
   selectMenuPage,
   (MenuPage) => MenuPage.products
 );
+export const retrieveChosenProduct = createSelector(
+  selectMenuPage,
+  (MenuPage) => MenuPage.chosenProduct
+);

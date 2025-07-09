@@ -67,9 +67,14 @@ export default function Navbar(props: NavbarProps) {
                 <NavLink to="/cart">Cart</NavLink>
               </div>
             ) : null}
+            {authMember ? (
+              <div>
+                <NavLink to="/likedProducts">Liked Products</NavLink>
+              </div>
+            ) : null}
 
             <div>
-              <NavLink to="/help">Help</NavLink>
+              <NavLink to="/faq">FAQ</NavLink>
             </div>
           </div>
 

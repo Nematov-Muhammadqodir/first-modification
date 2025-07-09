@@ -18,7 +18,7 @@ class ProductsService {
       if (search) url += `&search=${search}`;
       if (productCollection) url += `&productCollection=${productCollection}`;
 
-      const result = await axios.get(url);
+      const result = await axios.get(url, { withCredentials: true });
 
       console.log("getProducts", result);
       return result.data;
@@ -42,6 +42,17 @@ class ProductsService {
       return result.data;
     } catch (err) {
       console.log("Error getProducts", err);
+      throw err;
+    }
+  }
+
+  public async getProduct(id: string): Promise<Product> {
+    try {
+      const url = `${this.path}/product/${id}`;
+      const result = await axios.get(url, { withCredentials: true });
+      return result.data;
+    } catch (err) {
+      console.log("Error getProduct:", err);
       throw err;
     }
   }

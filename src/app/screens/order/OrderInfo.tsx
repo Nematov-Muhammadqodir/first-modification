@@ -41,6 +41,20 @@ export default function OrderInfo() {
   const { orders } = useSelector(processOrderRetriever);
   const history = useHistory();
 
+  const estimatedDelivery = new Date();
+  estimatedDelivery.setMinutes(estimatedDelivery.getMinutes() + 51);
+  const formattedDeliveryTime = estimatedDelivery.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const formattedDeliveryDate = estimatedDelivery.toLocaleDateString(
+    undefined,
+    {
+      month: "long",
+      day: "numeric",
+    }
+  );
+
   useEffect(() => {
     const orderService = new OrderService();
     const orderInquery: OrderInquery = {
@@ -114,7 +128,11 @@ export default function OrderInfo() {
             justifyContent={"space-between"}
           >
             <h4>Only 51 minutes left 😃</h4>
-            <div> Estimated delivery: May 26, 10:38 PM</div>
+            <div>
+              {" "}
+              Estimated delivery: {formattedDeliveryDate},{" "}
+              {formattedDeliveryTime}
+            </div>
           </Stack>
 
           <Stack
